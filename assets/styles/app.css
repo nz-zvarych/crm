@@ -1,0 +1,113 @@
+/* body {
+    background-color: skyblue;
+} */
+
+p {
+    margin-bottom: 10px;
+}
+
+.hide-placeholder option[value="0"] {
+    display: none;
+}
+
+body > header {
+    padding: 15px;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 720px;
+    margin: 0 auto !important;
+    padding: 0;
+}
+
+header nav a {
+    margin-bottom: 0;
+}
+
+header .logo a,
+header .logo a:hover {
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+    border: unset;
+    background-color: unset;
+    line-height: 1.2;
+}
+
+.breadcrumps {
+    display: flex;
+    gap: 5px;
+    margin: 30px 0;
+}
+
+.breadcrumps .edit-btn {
+    margin-left: auto;
+}
+
+.comment {
+    position: relative;
+    margin-bottom: 20px;
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        box-shadow: none;
+    }
+
+    .comment-text {
+        margin: 0 0 0 50px;
+    }
+
+    .rating {
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        .rating-star {
+            font-style: normal;
+        }
+    
+        .rating-star.empty {
+            filter: grayscale(1);
+        }
+    }
+}
+
+.review-form {
+    display: flex;
+    gap: 5px;
+    input {
+        display: none;
+    }
+
+    label {
+        filter: grayscale(0);
+        cursor: pointer;
+        transition: filter 0.2s ease;
+    }
+
+    label:hover,
+    label:hover ~ label {
+        filter: grayscale(1);
+    }
+
+    label:hover {
+        filter: grayscale(0) !important;
+    }
+
+
+
+    /* Selected effect */
+    label:has(input[type="radio"]:checked) ~ label {
+        filter: grayscale(1) !important;
+    }
+}
+
+.review-form:has(input[type="radio"]:checked) label {
+    /* filter: grayscale(1); */
+}

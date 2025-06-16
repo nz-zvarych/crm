@@ -1,0 +1,28 @@
+{{ form_errors(form) }}
+
+{{ form_start(form) }}
+    {{ form_row(form.profilePicture, {
+            required: false, 
+            mapped: false,
+            attr: {
+                onchange: "previewInputImage(this, 'avatarPreview')",
+            }  
+        })
+    }}
+
+    <img src="{{ asset('uploads/profiles/' ~ form.profilePicture.vars.data) }}" 
+        width="80" 
+        heigh="80"
+        id="avatarPreview"
+    />
+
+    {{ form_row(form.email) }}
+    {{ form_row(form.password, {
+        label: 'Password'
+    }) }}
+
+    {{ form_row(form.roles, { 'attr': {'class': 'hide-placeholder'} }) }}
+
+    {{ form_row(form.submit, {label: 'Save'}) }}
+
+{{ form_end(form) }}

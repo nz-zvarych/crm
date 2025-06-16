@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+
+    <div class="breadcrumps">
+        <a href="{{ path('homepage') }}">Home</a> 
+        <span>></span>
+        <a href="{{ path('app_product_index') }}">Products</a>
+        <span>></span>
+        <strong>{{ product.title }}</strong>
+        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_DISTRIBUTOR") %}
+            <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="edit-btn">Edit Product</a>
+        {% endif %}
+        
+    </div>
+
+    {% if product.thumbnail %}
+        <img src={{ asset("uploads/thumbnails/" ~ product.thumbnail) }} />
+    {% endif %}
+
+    <h1>{{ product.title ~ " - " ~ product.price ~ " " ~ product.currency }}</h1>
+
+    {% if product.description %}
+        <p>Rating {{ avarageRating|number_format(1) }}/5 based on {{ commentsCount }} 
+        {% if commentsCount > 1 %}
+            Reviews
+        {% else %}
+            Review
+        {% endif %}</p>
+    {% endif %}
+
+    {% if product.description %}
+        <p>{{ product.description }}</p>
+    {% endif %}
+
+    {% if commentsCount > 0 %}
+        <div class="comments">
+            <h4>
+                {{ commentsCount }} 
+                {% if commentsCount > 1 %}
+                    reviews
+                {% else %}
+                    review
+                {% endif %}
+            </h4>
+            {% for comment in comments %}
+                <div class="comment">
+                    <img src={{ asset("uploads/profiles/" ~ comment.user.profilePicture) }} width="32" heigh="32" />
+                    <div class="comment-text">
+                        <strong>{{ comment.user.email }}</strong> - <time>{{ comment.createdAt|date('F j, Y') }}</time>
+                        <span class="rating">
+                            {% for i in 1..5 %}
+                                {% if i <= comment.rating %}
+                                    <i class="rating-star">⭐</i>
+                                {% else %}
+                                    <i class="rating-star empty">⭐</i>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        <p>{{ comment.text }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    {{ form_start(commentForm) }}
+        <div class="review-form">
+            {% set i = 0 %}
+            {% for label, value in field_choices(commentForm.rating) %}
+                <label for="{{ commentForm.rating.vars.id ~ '_' ~ i }}">
+                    ⭐
+                    <input type="radio" id="{{ commentForm.rating.vars.id ~ '_' ~ i }}" name="{{ commentForm.rating.vars.full_name }}" value="{{ value }}" />
+                </label>
+                {% set i = i + 1 %}
+            {% endfor %}
+        </div>
+        {{ form_row(commentForm.text) }}
+        <button class="btn">{{ button_label|default('Send') }}</button>
+        
+    {# {{ form_end(commentForm) }} #}
+    {{ form_row(commentForm._token) }}
+    {{ form_end(commentForm, {render_rest: false}) }}
+
+
+    {# <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ product.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ product.description }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ product.price }}</td>
+            </tr>
+            <tr>
+                <th>Currency</th>
+                <td>{{ product.currency }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ product.amount }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table> #}
+
+    {# {{ include('product/_delete_form.html.twig') }} #}
+{% endblock %}

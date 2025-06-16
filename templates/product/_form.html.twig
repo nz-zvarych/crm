@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+
+    {{ form_row(form.thumbnail, {
+            required: false, 
+            mapped: false,
+            attr: {
+                onchange: "previewInputImage(this, 'previewThumbnail')",
+
+            }  
+        })
+    }}
+
+    <img src="{{ asset('uploads/thumbnails/' ~ form.thumbnail.vars.data) }}" 
+        width="200"
+        heigh="200"
+        id="previewThumbnail"
+    />
+
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

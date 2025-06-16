@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+
+<h1>Users</h1>
+
+<a href={{ path("user_new") }}>Add new</a>
+
+{% if users is empty %}
+    <p>No users found.</p>
+{% else %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Profile</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    {% if user.profilePicture is null %}
+                        <td>No picture</td>
+                    {% else %}
+                        <td><image src={{ asset('uploads/profiles/' ~ user.profilePicture) }} width="40" heigh="40"></td>
+                    {% endif %}
+                    <td>{{ user.email }}</td>
+                    <td>{{ 
+                        user.roles|join(', ')
+                    }}</td>
+                    <td><a href={{ path("user_edit", {"id": user.id}) }}>Edit</a></td>
+                    <td><a href={{ path("user_delete", {"id": user.id}) }}>Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% endblock %}

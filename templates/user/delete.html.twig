@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Delete User {{ app.user.userIdentifier }} {% endblock %}
+
+{% block body %}
+<h1>Delete User</h1>
+
+<p>Are you sure you want to delete the {% if app.user.id is same as(user) %}<strong>YOURSELF</strong>{% else %}user <strong>{{ user_email }}</strong>{% endif %}?</p>
+
+<form method="POST">
+
+    <input type="hidden" value="{{ user }}">
+    <button type="submit" class="btn btn-danger">Delete</button>
+
+</form>
+    
+{% endblock %}
