@@ -5,6 +5,11 @@
 {% block body %}
     <h1>Products</h1>
 
+    {{ form_start(searchForm, { attr: { 'data-turbo': 'false' }}) }}
+        {{ form_widget(searchForm) }}
+        <button class="btn btn-primary">Search</button>
+    {{ form_end(searchForm) }}
+
     <table class="table">
         <thead>
             <tr>

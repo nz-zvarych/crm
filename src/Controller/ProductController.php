@@ -14,15 +14,40 @@ use Symfony\Component\Routing\Attribute\Route;
 
 use App\Service\FileUploader;
 use App\Form\CommentForm;
+use App\Form\ProductSearchForm;
+use Doctrine\ORM\EntityManager;
 
 #[Route('/products')]
 final class ProductController extends AbstractController
 {
-    #[Route(name: 'app_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
+    #[Route(name: 'app_product_index', methods: ['GET', 'POST'])]
+    public function index(ProductRepository $productRepository, Request $request, EntityManagerInterface $manager): Response
     {
+        $form = $this->createForm(ProductSearchForm::class);
+
+        $form->handleRequest($request);
+
+        $query = $form->get('q')->getData();
+        $products = [];
+
+        
+        if ($query) {
+            $products = $manager->getRepository(Product::class)
+            ->createQueryBuilder('p')
+            ->where('p.title LIKE :q')
+            ->setParameter('q', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
+        } else {
+            $products = $manager->getRepository(Product::class)->findAll();
+        }
+
+        dump($products);
+        dump($query);
+
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $products,
+            'searchForm' => $form->createView(),
         ]);
     }
 
